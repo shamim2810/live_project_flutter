@@ -1,40 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:live_project_flutter/DataSource.dart';
+import 'package:live_project_flutter/json.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  Widget myNewsCard(int index) {
-    return Card(
-      child: Column(
-        children: [
-          Image.network(
-            DataSources.myNews[index]['image'],
-            height: 80,
-          ),
-          Text(
-            DataSources.myNews[index]['headline'],
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('News Feeds')),
-      body: OrientationBuilder(builder: (context, orientation) {
-        return
-          orientation == Orientation.landscape ? GridView.builder(
-            itemCount: DataSources.myNews.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemBuilder: (context, index) => myNewsCard(index),) : ListView.builder(
-            itemCount: DataSources.myNews.length,
-            itemBuilder: (context, index) => myNewsCard(index),);
-      },),
+      appBar: AppBar(
+        title: const Text(
+          'Weather Info app ',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: watherInfo.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ListTile(
+                  title: Text('City: ${watherInfo[index]['city']}'),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          'temperature: ${watherInfo[index]['temperature']}⁰C'),
+                      Text('condition: ${watherInfo[index]['condition']}'),
+                      Text('humidity: ${watherInfo[index]['humidity']}%'),
+                      Text('windSpeed: ${watherInfo[index]['windSpeed']} m/s'),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
